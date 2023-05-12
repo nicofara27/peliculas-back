@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import path from "path";
+import usuarioRouter from "./routes/usuarios.routes"
 import './database'
 
 const app = express();
@@ -23,4 +24,4 @@ app.use(morgan("dev"));
 //Archivo estatico
 app.use(express.static(path.join(__dirname, "../public")));
 
-
+app.use("/apipeliculas", usuarioRouter);
