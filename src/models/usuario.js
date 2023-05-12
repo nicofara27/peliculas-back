@@ -12,9 +12,15 @@ const usuarioSchema = new Schema({
     type: String,
     required: true,
     unique: [true, "El email debe ser unico, este ya existe."],
-    minLength: 8,
-    maxLength: 16,
+    minLength: 15,
+    maxLength: 80,
   },
+  contrasenia: {
+    type: String,
+    required: true,
+    minLength: 8,
+    maxLength: 60
+  }
 });
 
 const Usuario = mongoose.model("usuario", usuarioSchema);
