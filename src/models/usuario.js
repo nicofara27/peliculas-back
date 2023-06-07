@@ -19,8 +19,26 @@ const usuarioSchema = new Schema({
     type: String,
     required: true,
     minLength: 8,
-    maxLength: 60
-  }
+    maxLength: 60,
+  },
+  lista: [
+    {
+      key: {
+        type: Number
+      },
+      imagen: {
+        type: String,
+      },
+      nombrePelicula: {
+        type: String,
+      },
+      puntuacion: {
+        type: Number,
+        min: 0,
+        max: 10,
+      },
+    }
+  ],
 });
 
 const Usuario = mongoose.model("usuario", usuarioSchema);
