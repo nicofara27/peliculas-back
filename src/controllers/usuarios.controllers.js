@@ -35,7 +35,6 @@ export const crearUsuario = async (req, res) => {
     res.status(201).json({
       mensaje: "Usuario creado",
       nombreUsuario: usuario.nombreUsuario,
-      idUsuario: usuario._id,
     });
   } catch (error) {
     console.log(error);
@@ -74,8 +73,7 @@ export const login = async (req, res) => {
     }
 
     res.status(200).json({
-      idUsuario: usuario._id,
-      nombre: nombreUsuario,
+      nombre: usuario.nombreUsuario,
     });
   } catch (error) {
     console.log(error);
@@ -88,8 +86,8 @@ export const login = async (req, res) => {
 export const obtenerListaPeliculas = async (req, res) => {
   const nombreUsuario = req.params.nombreUsuario;
   try {
-    const listaPeliculas = await Usuario.find({nombreUsuario});
-    console.log(listaPeliculas[0].lista)
+    const listaPeliculas = await Usuario.find({ nombreUsuario });
+    console.log(listaPeliculas[0].lista);
     res.status(200).json(listaPeliculas);
   } catch (error) {
     console.log(error);
@@ -103,24 +101,29 @@ export const obtenerListaPeliculas = async (req, res) => {
 export const editarLista = async (req, res) => {
   const nombreUsuario = req.params.nombreUsuario;
   const nuevaPelicula = req.body;
-  const usuario = await Usuario.findOne({nombreUsuario});
-  // Si la pelicula no se encuentra en la lista la agrega 
+  const usuario = await Usuario.findOne({ nombreUsuario });
+  // Si la pelicula no se encuentra en la lista la agrega
   try {
-    if(!usuario.lista.find(({ nombrePelicula }) => nombrePelicula === nuevaPelicula.nombrePelicula)) {
-      
-      await Usuario.findOneAndUpdate({nombreUsuario}, {
-        $addToSet: { lista: nuevaPelicula },
-      });
+    if (
+      !usuario.lista.find(
+        ({ nombrePelicula }) => nombrePelicula === nuevaPelicula.nombrePelicula
+      )
+    ) {
+      await Usuario.findOneAndUpdate(
+        { nombreUsuario },
+        {
+          $addToSet: { lista: nuevaPelicula },
+        }
+      );
 
       res.status(200).json({
         mensaje: "Se edito la lista correctamente",
       });
     } else {
       res.status(409).json({
-        mensaje: "La pelicula ya se encuentra en la lista"
-      })
+        mensaje: "La pelicula ya se encuentra en la lista",
+      });
     }
- 
   } catch (error) {
     console.log(error);
 
@@ -130,17 +133,19 @@ export const editarLista = async (req, res) => {
   }
 };
 
-
 // Funcion que agrega una pelicula a la lista de peliculas de cada usuario
 export const elimiarDeLista = async (req, res) => {
   const nombreUsuario = req.params.nombreUsuario;
   const peliculaABorrar = req.body;
 
-  // Si la pelicula no se encuentra en la lista la agrega 
+  // Si la pelicula no se encuentra en la lista la agrega
   try {
-    await Usuario.findOneAndUpdate({nombreUsuario}, {
-      $pull: { lista: {key: peliculaABorrar.key} },
-    });
+    await Usuario.findOneAndUpdate(
+      { nombreUsuario },
+      {
+        $pull: { lista: { key: peliculaABorrar.key } },
+      }
+    );
   } catch (error) {
     console.log(error);
 
