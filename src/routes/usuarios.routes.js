@@ -1,6 +1,12 @@
 import { Router } from "express";
-import { crearUsuario, login } from "../controllers/usuarios.controllers";
+import {
+  crearUsuario,
+  elimiarDeLista,
+  login,
+  obtenerListaPeliculas,
+} from "../controllers/usuarios.controllers";
 import { check } from "express-validator";
+import { editarLista } from "../controllers/usuarios.controllers";
 const router = Router();
 
 router
@@ -37,8 +43,18 @@ router
         .notEmpty()
         .isLength({ min: 8, max: 60 })
         .withMessage("La contraseña debe tener entre 8 y 60 caracteres"),
+      check("lista").isArray(),
     ],
     crearUsuario
   );
+
+router
+  .route("/:nombreUsuario")
+  .put(editarLista)
+  .get(obtenerListaPeliculas)
+
+router
+.route("/:nombreUsuario/:pelicula")
+.put(elimiarDeLista);
 
 export default router;
