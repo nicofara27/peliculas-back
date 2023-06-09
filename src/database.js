@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const url = "mongodb://127.0.0.1:27017/buscador-peliculas";
+const url = "mongodb+srv://nicofara:38489829@cluster0.r9qqgtk.mongodb.net/peliculas";
 
 mongoose.connect(url);
 
