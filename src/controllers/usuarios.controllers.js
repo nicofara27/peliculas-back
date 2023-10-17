@@ -87,7 +87,7 @@ export const obtenerListaPeliculas = async (req, res) => {
   const nombreUsuario = req.params.nombreUsuario;
   try {
     const listaPeliculas = await Usuario.find({ nombreUsuario });
-    res.status(200).json(listaPeliculas);
+    res.status(200).json(listaPeliculas[0].lista);
   } catch (error) {
     console.log(error);
     res.status(404).json({
